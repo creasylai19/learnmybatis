@@ -95,6 +95,7 @@ public class Resources {
    * @param resource The resource to find
    * @return The resource
    * @throws IOException If the resource cannot be found or read
+   * add by creasy 2019.12.31 使用类加载器加载类并初始化
    */
   public static InputStream getResourceAsStream(String resource) throws IOException {
     return getResourceAsStream(null, resource);
@@ -107,6 +108,7 @@ public class Resources {
    * @param resource The resource to find
    * @return The resource
    * @throws IOException If the resource cannot be found or read
+   * add by creasy 2019.12.31 使用类加载器加载资源
    */
   public static InputStream getResourceAsStream(ClassLoader loader, String resource) throws IOException {
     InputStream in = classLoaderWrapper.getResourceAsStream(resource, loader);

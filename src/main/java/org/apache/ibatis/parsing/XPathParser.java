@@ -122,6 +122,9 @@ public class XPathParser {
     this.document = createDocument(new InputSource(reader));
   }
 
+  /**
+   * add by creasylai 2019.12.31 初始化并创建document对象
+   */
   public XPathParser(InputStream inputStream, boolean validation, Properties variables, EntityResolver entityResolver) {
     commonConstructor(validation, variables, entityResolver);
     this.document = createDocument(new InputSource(inputStream));
@@ -227,6 +230,9 @@ public class XPathParser {
     }
   }
 
+  /**
+   * add by creasylai 2019.12.31 创建Document对象
+   */
   private Document createDocument(InputSource inputSource) {
     // important: this must only be called AFTER common constructor
     try {
@@ -264,6 +270,9 @@ public class XPathParser {
     }
   }
 
+  /**
+   * add by creasylai 2019.12.31 赋值并创建XPath
+   */
   private void commonConstructor(boolean validation, Properties variables, EntityResolver entityResolver) {
     this.validation = validation;
     this.entityResolver = entityResolver;

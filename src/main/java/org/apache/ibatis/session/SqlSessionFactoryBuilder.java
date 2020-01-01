@@ -60,6 +60,10 @@ public class SqlSessionFactoryBuilder {
     }
   }
 
+  /**
+   *
+   * add by creasy 2019.12.31
+   */
   public SqlSessionFactory build(InputStream inputStream) {
     return build(inputStream, null, null);
   }
@@ -72,6 +76,10 @@ public class SqlSessionFactoryBuilder {
     return build(inputStream, null, properties);
   }
 
+  /**
+   *
+   * add by creasy 2019.12.31
+   */
   public SqlSessionFactory build(InputStream inputStream, String environment, Properties properties) {
     try {
       XMLConfigBuilder parser = new XMLConfigBuilder(inputStream, environment, properties);

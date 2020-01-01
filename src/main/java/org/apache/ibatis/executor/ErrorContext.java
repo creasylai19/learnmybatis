@@ -17,6 +17,7 @@ package org.apache.ibatis.executor;
 
 /**
  * @author Clinton Begin
+ * add by creasylai 2019.12.31
  */
 public class ErrorContext {
 
@@ -34,6 +35,10 @@ public class ErrorContext {
   private ErrorContext() {
   }
 
+  /**
+   *
+   * add by creasylai 2019.12.31 返回当前线程的ErrorContext对象
+   */
   public static ErrorContext instance() {
     ErrorContext context = LOCAL.get();
     if (context == null) {
@@ -43,6 +48,10 @@ public class ErrorContext {
     return context;
   }
 
+  /**
+   *
+   * add by creasylai 2019.12.31 使用新ErrorContext对象覆盖原对象
+   */
   public ErrorContext store() {
     ErrorContext newContext = new ErrorContext();
     newContext.stored = this;
@@ -50,6 +59,10 @@ public class ErrorContext {
     return LOCAL.get();
   }
 
+  /**
+   *
+   * add by creasylai 2019.12.31 使得stored引用为空
+   */
   public ErrorContext recall() {
     if (stored != null) {
       LOCAL.set(stored);
@@ -58,36 +71,64 @@ public class ErrorContext {
     return LOCAL.get();
   }
 
+  /**
+   *
+   * add by creasylai 2019.12.31 resource
+   */
   public ErrorContext resource(String resource) {
     this.resource = resource;
     return this;
   }
 
+  /**
+   *
+   * add by creasylai 2019.12.31 activity
+   */
   public ErrorContext activity(String activity) {
     this.activity = activity;
     return this;
   }
 
+  /**
+   *
+   * add by creasylai 2019.12.31 object
+   */
   public ErrorContext object(String object) {
     this.object = object;
     return this;
   }
 
+  /**
+   *
+   * add by creasylai 2019.12.31 message
+   */
   public ErrorContext message(String message) {
     this.message = message;
     return this;
   }
 
+  /**
+   *
+   * add by creasylai 2019.12.31 sql
+   */
   public ErrorContext sql(String sql) {
     this.sql = sql;
     return this;
   }
 
+  /**
+   *
+   * add by creasylai 2019.12.31 cause
+   */
   public ErrorContext cause(Throwable cause) {
     this.cause = cause;
     return this;
   }
 
+  /**
+   *
+   * add by creasylai 2019.12.31 重置该对象本身
+   */
   public ErrorContext reset() {
     resource = null;
     activity = null;
@@ -99,6 +140,10 @@ public class ErrorContext {
     return this;
   }
 
+  /**
+   *
+   * add by creasylai 2019.12.31 toString()
+   */
   @Override
   public String toString() {
     StringBuilder description = new StringBuilder();

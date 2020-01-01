@@ -29,6 +29,7 @@ import org.xml.sax.SAXException;
  *
  * @author Clinton Begin
  * @author Eduardo Macarron
+ * read at 2019.12.31 by creaslai
  */
 public class XMLMapperEntityResolver implements EntityResolver {
 
@@ -48,6 +49,7 @@ public class XMLMapperEntityResolver implements EntityResolver {
    * @return The InputSource for the DTD
    *
    * @throws SAXException If anything goes wrong
+   * add by creasylai 2019.12.31 根据systemId返回dtd文件
    */
   @Override
   public InputSource resolveEntity(String publicId, String systemId) throws SAXException {
@@ -66,6 +68,9 @@ public class XMLMapperEntityResolver implements EntityResolver {
     }
   }
 
+  /**
+   * add by creasylai 2019.12.31 根据path返回一个InputSource
+   */
   private InputSource getInputSource(String path, String publicId, String systemId) {
     InputSource source = null;
     if (path != null) {

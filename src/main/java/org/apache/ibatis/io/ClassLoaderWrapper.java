@@ -22,12 +22,16 @@ import java.net.URL;
  * A class to wrap access to multiple class loaders making them work as one
  *
  * @author Clinton Begin
+ * add by creasy 2019.12.31 使用类加载器加载资源(类、InputStream、URL)
  */
 public class ClassLoaderWrapper {
 
   ClassLoader defaultClassLoader;
-  ClassLoader systemClassLoader;
+  ClassLoader systemClassLoader;//add by creasy 2019.12.31 系统加载器
 
+  /**
+   * 给系统加载器赋初始值
+   */
   ClassLoaderWrapper() {
     try {
       systemClassLoader = ClassLoader.getSystemClassLoader();
@@ -41,6 +45,7 @@ public class ClassLoaderWrapper {
    *
    * @param resource - the resource to locate
    * @return the resource or null
+   * add by creasy 2019.12.31 使用类加载器寻找资源
    */
   public URL getResourceAsURL(String resource) {
     return getResourceAsURL(resource, getClassLoaders(null));
@@ -52,6 +57,7 @@ public class ClassLoaderWrapper {
    * @param resource    - the resource to find
    * @param classLoader - the first classloader to try
    * @return the stream or null
+   * add by creasy 2019.12.31 使用类加载器寻找资源
    */
   public URL getResourceAsURL(String resource, ClassLoader classLoader) {
     return getResourceAsURL(resource, getClassLoaders(classLoader));
@@ -62,6 +68,7 @@ public class ClassLoaderWrapper {
    *
    * @param resource - the resource to find
    * @return the stream or null
+   * add by creasy 2019.12.31 使用类加载器加载资源
    */
   public InputStream getResourceAsStream(String resource) {
     return getResourceAsStream(resource, getClassLoaders(null));
@@ -73,6 +80,7 @@ public class ClassLoaderWrapper {
    * @param resource    - the resource to find
    * @param classLoader - the first class loader to try
    * @return the stream or null
+   * add by creasy 2019.12.31 使用类加载器加载资源
    */
   public InputStream getResourceAsStream(String resource, ClassLoader classLoader) {
     return getResourceAsStream(resource, getClassLoaders(classLoader));
@@ -84,6 +92,7 @@ public class ClassLoaderWrapper {
    * @param name - the class to look for
    * @return - the class
    * @throws ClassNotFoundException Duh.
+   * add by creasy 2019.12.31 使用类加载器加载类并初始化
    */
   public Class<?> classForName(String name) throws ClassNotFoundException {
     return classForName(name, getClassLoaders(null));
@@ -96,6 +105,7 @@ public class ClassLoaderWrapper {
    * @param classLoader - the first classloader to try
    * @return - the class
    * @throws ClassNotFoundException Duh.
+   * add by creasy 2019.12.31 使用类加载器加载类并初始化
    */
   public Class<?> classForName(String name, ClassLoader classLoader) throws ClassNotFoundException {
     return classForName(name, getClassLoaders(classLoader));
@@ -107,6 +117,7 @@ public class ClassLoaderWrapper {
    * @param resource    - the resource to get
    * @param classLoader - the classloaders to examine
    * @return the resource or null
+   * add by creasy 2019.12.31 使用类加载器加载资源，返回InputStream
    */
   InputStream getResourceAsStream(String resource, ClassLoader[] classLoader) {
     for (ClassLoader cl : classLoader) {
@@ -134,6 +145,7 @@ public class ClassLoaderWrapper {
    * @param resource    - the resource to locate
    * @param classLoader - the class loaders to examine
    * @return the resource or null
+   * add by creasylai 2019.12.31 通过类加载器数组加载资源
    */
   URL getResourceAsURL(String resource, ClassLoader[] classLoader) {
 
@@ -174,6 +186,7 @@ public class ClassLoaderWrapper {
    * @param classLoader - the group of classloaders to examine
    * @return the class
    * @throws ClassNotFoundException - Remember the wisdom of Judge Smails: Well, the world needs ditch diggers, too.
+   * add by creasy 2019.12.31 使用类加载器加载类并初始化
    */
   Class<?> classForName(String name, ClassLoader[] classLoader) throws ClassNotFoundException {
 
@@ -201,6 +214,11 @@ public class ClassLoaderWrapper {
 
   }
 
+  /**
+   *
+   * add by creasylai 2019.12.31
+   * 返回类加载器数组【传入加载器、默认加载器(可能为null)、线程绑定的加载器、本类的加载器、系统加载器】
+   */
   ClassLoader[] getClassLoaders(ClassLoader classLoader) {
     return new ClassLoader[]{
         classLoader,

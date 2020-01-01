@@ -1,4 +1,4 @@
-package org.mybatis.example;
+package org.mybatis.example.domain;
 
 public class Blog {
 

@@ -19,6 +19,7 @@ import org.apache.ibatis.executor.ErrorContext;
 
 /**
  * @author Clinton Begin
+ * add by creasylai 2019.12.31
  */
 public class ExceptionFactory {
 
@@ -26,6 +27,10 @@ public class ExceptionFactory {
     // Prevent Instantiation
   }
 
+  /**
+   *
+   * add by creasylai 2019.12.31 创建异常对象
+   */
   public static RuntimeException wrapException(String message, Exception e) {
     return new PersistenceException(ErrorContext.instance().message(message).cause(e).toString(), e);
   }

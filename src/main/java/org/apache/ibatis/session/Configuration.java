@@ -173,11 +173,18 @@ public class Configuration {
    */
   protected final Map<String, String> cacheRefMap = new HashMap<>();
 
+  /**
+   *
+   * add by creasylai 2019.12.31 初始化Configuration，同时设置environment
+   */
   public Configuration(Environment environment) {
     this();
     this.environment = environment;
   }
 
+  /**
+   * add by creasylai 2019.12.31 初始化Configuration
+   */
   public Configuration() {
     typeAliasRegistry.registerAlias("JDBC", JdbcTransactionFactory.class);
     typeAliasRegistry.registerAlias("MANAGED", ManagedTransactionFactory.class);
@@ -900,6 +907,9 @@ public class Configuration {
     }
   }
 
+  /**
+   * add by creasylai19 构造不能重复key的HashMap
+   */
   protected static class StrictMap<V> extends HashMap<String, V> {
 
     private static final long serialVersionUID = -4950446264854982944L;
@@ -970,6 +980,9 @@ public class Configuration {
       return value;
     }
 
+    /**
+     * add by creasylai 2019.12.31 String包装类
+     */
     protected static class Ambiguity {
       final private String subject;
 
@@ -982,6 +995,10 @@ public class Configuration {
       }
     }
 
+    /**
+     *
+     * add by creasylai 2019.12.31 以.分隔字符串，取出最后一个子串
+     */
     private String getShortName(String key) {
       final String[] keyParts = key.split("\\.");
       return keyParts[keyParts.length - 1];
