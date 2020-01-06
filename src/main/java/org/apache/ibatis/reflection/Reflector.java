@@ -46,6 +46,7 @@ import org.apache.ibatis.reflection.property.PropertyNamer;
  * allows for easy mapping between property names and getter/setter methods.
  *
  * @author Clinton Begin
+ * add by creasylai 2020.1.6 反射器，主要解析类的field和get/set方法
  */
 public class Reflector {
 
@@ -62,10 +63,10 @@ public class Reflector {
 
   public Reflector(Class<?> clazz) {
     type = clazz;
-    addDefaultConstructor(clazz);
-    addGetMethods(clazz);
-    addSetMethods(clazz);
-    addFields(clazz);
+    addDefaultConstructor(clazz);//找到无参构造方法
+    addGetMethods(clazz);//获取get方法及其返回值
+    addSetMethods(clazz);//获取set方法及其返回值
+    addFields(clazz);//递归添加field
     readablePropertyNames = getMethods.keySet().toArray(new String[0]);
     writablePropertyNames = setMethods.keySet().toArray(new String[0]);
     for (String propName : readablePropertyNames) {
@@ -76,20 +77,32 @@ public class Reflector {
     }
   }
 
+  /**
+   * add by creasylai 2020.1.6 找到无参构造方法
+   * @param clazz
+   */
   private void addDefaultConstructor(Class<?> clazz) {
     Constructor<?>[] constructors = clazz.getDeclaredConstructors();
     Arrays.stream(constructors).filter(constructor -> constructor.getParameterTypes().length == 0)
       .findAny().ifPresent(constructor -> this.defaultConstructor = constructor);
   }
 
+  /**
+   * add by creasylai 2020.1.6 获取get方法及其返回值
+   * @param clazz
+   */
   private void addGetMethods(Class<?> clazz) {
     Map<String, List<Method>> conflictingGetters = new HashMap<>();
-    Method[] methods = getClassMethods(clazz);
+    Method[] methods = getClassMethods(clazz);//获取类的所有方法
     Arrays.stream(methods).filter(m -> m.getParameterTypes().length == 0 && PropertyNamer.isGetter(m.getName()))
       .forEach(m -> addMethodConflict(conflictingGetters, PropertyNamer.methodToProperty(m.getName()), m));
     resolveGetterConflicts(conflictingGetters);
   }
 
+  /**
+   * add by creasylai 2020.1.6 对冲突的方法做选举，主要根据返回值，选取返回子类型的方法
+   * @param conflictingGetters
+   */
   private void resolveGetterConflicts(Map<String, List<Method>> conflictingGetters) {
     for (Entry<String, List<Method>> entry : conflictingGetters.entrySet()) {
       Method winner = null;
@@ -122,6 +135,12 @@ public class Reflector {
     }
   }
 
+  /**
+   * add by creasylai 2020.1.6 把方法放入getMethods对象中，返回值放入getTypes对象
+   * @param name
+   * @param method
+   * @param isAmbiguous
+   */
   private void addGetMethod(String name, Method method, boolean isAmbiguous) {
     MethodInvoker invoker = isAmbiguous
         ? new AmbiguousMethodInvoker(method, MessageFormat.format(
@@ -133,6 +152,10 @@ public class Reflector {
     getTypes.put(name, typeToClass(returnType));
   }
 
+  /**
+   * add by creasylai 2020.1.6 获取set方法及其返回值
+   * @param clazz
+   */
   private void addSetMethods(Class<?> clazz) {
     Map<String, List<Method>> conflictingSetters = new HashMap<>();
     Method[] methods = getClassMethods(clazz);
@@ -141,6 +164,12 @@ public class Reflector {
     resolveSetterConflicts(conflictingSetters);
   }
 
+  /**
+   * add by creaylai 2020.1.6 往conflictingMethods中放入以name为Key，以List<Method>为value的数据，其中value包含一个method数据
+   * @param conflictingMethods
+   * @param name
+   * @param method
+   */
   private void addMethodConflict(Map<String, List<Method>> conflictingMethods, String name, Method method) {
     if (isValidPropertyName(name)) {
       List<Method> list = conflictingMethods.computeIfAbsent(name, k -> new ArrayList<>());
@@ -148,6 +177,10 @@ public class Reflector {
     }
   }
 
+  /**
+   * add by creaylai 2020.1.6 解决冲突的返回值，选举返回值是get返回的类型，如果找不到就选举返回子类型的方法
+   * @param conflictingSetters
+   */
   private void resolveSetterConflicts(Map<String, List<Method>> conflictingSetters) {
     for (String propName : conflictingSetters.keySet()) {
       List<Method> setters = conflictingSetters.get(propName);
@@ -172,6 +205,13 @@ public class Reflector {
     }
   }
 
+  /**
+   * add by creaylai 2020.1.6 选举返回值为子类的方法
+   * @param setter1
+   * @param setter2
+   * @param property
+   * @return
+   */
   private Method pickBetterSetter(Method setter1, Method setter2, String property) {
     if (setter1 == null) {
       return setter2;
@@ -193,6 +233,11 @@ public class Reflector {
     return null;
   }
 
+  /**
+   * add by creaylai 2020.1.6 添加set方法
+   * @param name
+   * @param method
+   */
   private void addSetMethod(String name, Method method) {
     MethodInvoker invoker = new MethodInvoker(method);
     setMethods.put(name, invoker);
@@ -221,6 +266,10 @@ public class Reflector {
     return result;
   }
 
+  /**
+   * add by creasylai 2020.1.6 递归添加field
+   * @param clazz
+   */
   private void addFields(Class<?> clazz) {
     Field[] fields = clazz.getDeclaredFields();
     for (Field field : fields) {
@@ -242,6 +291,10 @@ public class Reflector {
     }
   }
 
+  /**
+   * add by creasylai 2020.1.6
+   * @param field
+   */
   private void addSetField(Field field) {
     if (isValidPropertyName(field.getName())) {
       setMethods.put(field.getName(), new SetFieldInvoker(field));
@@ -250,6 +303,10 @@ public class Reflector {
     }
   }
 
+  /**
+   * add by creasylai 2020.1.6
+   * @param field
+   */
   private void addGetField(Field field) {
     if (isValidPropertyName(field.getName())) {
       getMethods.put(field.getName(), new GetFieldInvoker(field));
@@ -258,6 +315,11 @@ public class Reflector {
     }
   }
 
+  /**
+   * add by creaylai 2020.1.6
+   * @param name
+   * @return
+   */
   private boolean isValidPropertyName(String name) {
     return !(name.startsWith("$") || "serialVersionUID".equals(name) || "class".equals(name));
   }
@@ -270,6 +332,7 @@ public class Reflector {
    *
    * @param clazz The class
    * @return An array containing all methods in this class
+   * add by creasylai 2020.1.6 获取类的所有方法，以数组方式返回
    */
   private Method[] getClassMethods(Class<?> clazz) {
     Map<String, Method> uniqueMethods = new HashMap<>();
@@ -292,9 +355,14 @@ public class Reflector {
     return methods.toArray(new Method[0]);
   }
 
+  /**
+   * add by creasylai 2020.1.6 遍历把methods放到Map中，Key是方法的签名，如果Map中已经存在，则忽略
+   * @param uniqueMethods
+   * @param methods
+   */
   private void addUniqueMethods(Map<String, Method> uniqueMethods, Method[] methods) {
     for (Method currentMethod : methods) {
-      if (!currentMethod.isBridge()) {
+      if (!currentMethod.isBridge()) {//如果不是桥接方法【具体定义参考https://stackoverflow.com/questions/289731/what-method-isbridge-used-for，或者https://www.zhihu.com/question/54895701】
         String signature = getSignature(currentMethod);
         // check to see if the method is already known
         // if it is known, then an extended class must have
@@ -306,6 +374,11 @@ public class Reflector {
     }
   }
 
+  /**
+   * add by creasylai 2020.1.6 返回方法的签名，类似：[String#methodName:String,String]代表返回值是String，方法名为methodName，参数为String,String
+   * @param method
+   * @return
+   */
   private String getSignature(Method method) {
     StringBuilder sb = new StringBuilder();
     Class<?> returnType = method.getReturnType();
@@ -325,6 +398,7 @@ public class Reflector {
    *
    * @return If can control member accessible, it return {@literal true}
    * @since 3.5.0
+   * add by creasylai 2020.1.6
    */
   public static boolean canControlMemberAccessible() {
     try {

@@ -7,6 +7,7 @@ import org.mybatis.example.dao.UserMapper;
 import org.mybatis.example.domain.Blog;
 import org.mybatis.example.dao.BlogMapper;
 import org.mybatis.example.domain.User;
+import org.mybatis.example.utils.ExamplePlugin;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,6 +41,11 @@ public class MainClass {
         new TestBrace(){{
             System.out.println("MainClass");
         }}.toString();*/
+        System.out.println(ExamplePlugin.class.getInterfaces());
+        System.out.println(ExamplePlugin.class.getCanonicalName());
+        System.out.println(ExamplePlugin.class.getSimpleName());
+        System.out.println(ExamplePlugin.class.getName());
+        System.out.println(ExamplePlugin.class.getTypeName());
     }
 
     public static String insertPersonSql() {

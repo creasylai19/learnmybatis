@@ -21,6 +21,7 @@ import org.apache.ibatis.reflection.ReflectionException;
 
 /**
  * @author Clinton Begin
+ * add by creaylai 2020.1.6 READ
  */
 public final class PropertyNamer {
 
@@ -28,6 +29,11 @@ public final class PropertyNamer {
     // Prevent Instantiation of Static Class
   }
 
+  /**
+   * add by creasylai 2020.1.6 拿到get的名字，注意，如果get的后面是双大写，如getAAb，则返回的名字是AAb，不会转成小写开头的aAb
+   * @param name
+   * @return
+   */
   public static String methodToProperty(String name) {
     if (name.startsWith("is")) {
       name = name.substring(2);
@@ -44,14 +50,29 @@ public final class PropertyNamer {
     return name;
   }
 
+  /**
+   * add by creaylai 2020.1.6
+   * @param name
+   * @return
+   */
   public static boolean isProperty(String name) {
     return isGetter(name) || isSetter(name);
   }
 
+  /**
+   * add by creaylai 2020.1.6
+   * @param name
+   * @return
+   */
   public static boolean isGetter(String name) {
     return (name.startsWith("get") && name.length() > 3) || (name.startsWith("is") && name.length() > 2);
   }
 
+  /**
+   * add by creaylai 2020.1.6
+   * @param name
+   * @return
+   */
   public static boolean isSetter(String name) {
     return name.startsWith("set") && name.length() > 3;
   }
