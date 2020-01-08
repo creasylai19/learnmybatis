@@ -34,6 +34,7 @@ import org.apache.ibatis.transaction.TransactionException;
  * @author Clinton Begin
  *
  * @see JdbcTransactionFactory
+ * add by creasylai 2020.1.7
  */
 public class JdbcTransaction implements Transaction {
 
@@ -54,6 +55,11 @@ public class JdbcTransaction implements Transaction {
     this.connection = connection;
   }
 
+  /**
+   * add by creasylai 2020.1.7 拿到一个链接【这个链接或者是外部传来，或者是从DataSource中获取】
+   * @return
+   * @throws SQLException
+   */
   @Override
   public Connection getConnection() throws SQLException {
     if (connection == null) {
@@ -62,6 +68,10 @@ public class JdbcTransaction implements Transaction {
     return connection;
   }
 
+  /**
+   * add by creasylai 2020.1.7 提交事务
+   * @throws SQLException
+   */
   @Override
   public void commit() throws SQLException {
     if (connection != null && !connection.getAutoCommit()) {
@@ -72,6 +82,10 @@ public class JdbcTransaction implements Transaction {
     }
   }
 
+  /**
+   * add by creasylai 2020.1.7 回滚事务
+   * @throws SQLException
+   */
   @Override
   public void rollback() throws SQLException {
     if (connection != null && !connection.getAutoCommit()) {
@@ -82,6 +96,10 @@ public class JdbcTransaction implements Transaction {
     }
   }
 
+  /**
+   * add by creasylai 2020.1.7 关闭链接
+   * @throws SQLException
+   */
   @Override
   public void close() throws SQLException {
     if (connection != null) {
@@ -93,6 +111,10 @@ public class JdbcTransaction implements Transaction {
     }
   }
 
+  /**
+   * add by creasylai 2020.1.7 设置自动提交
+   * @param desiredAutoCommit
+   */
   protected void setDesiredAutoCommit(boolean desiredAutoCommit) {
     try {
       if (connection.getAutoCommit() != desiredAutoCommit) {
@@ -110,6 +132,9 @@ public class JdbcTransaction implements Transaction {
     }
   }
 
+  /**
+   * add by creasylai 2020.1.7 重置自动提交为true
+   */
   protected void resetAutoCommit() {
     try {
       if (!connection.getAutoCommit()) {
@@ -131,6 +156,10 @@ public class JdbcTransaction implements Transaction {
     }
   }
 
+  /**
+   * add by creasylai 2020.1.7 从datasource中开启一个链接，设置隔离级别和自动提交
+   * @throws SQLException
+   */
   protected void openConnection() throws SQLException {
     if (log.isDebugEnabled()) {
       log.debug("Opening JDBC Connection");
@@ -142,6 +171,11 @@ public class JdbcTransaction implements Transaction {
     setDesiredAutoCommit(autoCommit);
   }
 
+  /**
+   * add by creasylai 2020.1.7
+   * @return
+   * @throws SQLException
+   */
   @Override
   public Integer getTimeout() throws SQLException {
     return null;

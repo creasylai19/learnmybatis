@@ -166,6 +166,7 @@ public abstract class VFS {
    * @param path The resource path.
    * @return A list of {@link URL}s, as returned by {@link ClassLoader#getResources(String)}.
    * @throws IOException If I/O errors occur
+   * add by creasylai 2020.1.7 找出指定路径下的所有资源(可以访问的)
    */
   protected static List<URL> getResources(String path) throws IOException {
     return Collections.list(Thread.currentThread().getContextClassLoader().getResources(path));

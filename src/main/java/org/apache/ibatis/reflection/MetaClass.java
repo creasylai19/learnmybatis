@@ -131,6 +131,11 @@ public class MetaClass {
     return null;
   }
 
+  /**
+   * add by creasylai 2020.1.7 查看关联的reflector是否有setter方法
+   * @param name
+   * @return
+   */
   public boolean hasSetter(String name) {
     PropertyTokenizer prop = new PropertyTokenizer(name);
     if (prop.hasNext()) {

@@ -35,6 +35,7 @@ import org.apache.ibatis.io.Resources;
 /**
  * @author Clinton Begin
  * @author Eduardo Macarron
+ * add by creasylai 2020.1.7 获取无连接池的DataSource
  */
 public class UnpooledDataSource implements DataSource {
 
@@ -202,6 +203,13 @@ public class UnpooledDataSource implements DataSource {
     this.defaultNetworkTimeout = defaultNetworkTimeout;
   }
 
+  /**
+   * add by creasylai 2020.1.7 封装用户名和密码成properties然后用于Driver获取链接
+   * @param username
+   * @param password
+   * @return
+   * @throws SQLException
+   */
   private Connection doGetConnection(String username, String password) throws SQLException {
     Properties props = new Properties();
     if (driverProperties != null) {
@@ -216,6 +224,12 @@ public class UnpooledDataSource implements DataSource {
     return doGetConnection(props);
   }
 
+  /**
+   * add by creasylai 2020.1.7 根据配置获取链接，首先初始化，加载类；然后获取链接；然后配置链接
+   * @param properties
+   * @return
+   * @throws SQLException
+   */
   private Connection doGetConnection(Properties properties) throws SQLException {
     initializeDriver();
     Connection connection = DriverManager.getConnection(url, properties);
@@ -223,6 +237,10 @@ public class UnpooledDataSource implements DataSource {
     return connection;
   }
 
+  /**
+   * add by creasylai 2020.1.7 初始化Driver【Class.forName()】
+   * @throws SQLException
+   */
   private synchronized void initializeDriver() throws SQLException {
     if (!registeredDrivers.containsKey(driver)) {
       Class<?> driverType;
@@ -235,7 +253,7 @@ public class UnpooledDataSource implements DataSource {
         // DriverManager requires the driver to be loaded via the system ClassLoader.
         // http://www.kfu.com/~nsayer/Java/dyn-jdbc.html
         Driver driverInstance = (Driver)driverType.getDeclaredConstructor().newInstance();
-        DriverManager.registerDriver(new DriverProxy(driverInstance));
+        DriverManager.registerDriver(new DriverProxy(driverInstance));//向虚拟机的DriverManager注册驱动，其实像MYSQL的com.mysql.jdbc.Driver在加载的时候就已经注册了
         registeredDrivers.put(driver, driverInstance);
       } catch (Exception e) {
         throw new SQLException("Error setting driver on UnpooledDataSource. Cause: " + e);
@@ -243,6 +261,11 @@ public class UnpooledDataSource implements DataSource {
     }
   }
 
+  /**
+   * add by creasylai 2020.1.7 设置链接的默认参数
+   * @param conn
+   * @throws SQLException
+   */
   private void configureConnection(Connection conn) throws SQLException {
     if (defaultNetworkTimeout != null) {
       conn.setNetworkTimeout(Executors.newSingleThreadExecutor(), defaultNetworkTimeout);
@@ -255,6 +278,10 @@ public class UnpooledDataSource implements DataSource {
     }
   }
 
+  /**
+   * add by creasylai 2020.1.7
+   * 一个简单的Driver代理
+   */
   private static class DriverProxy implements Driver {
     private Driver driver;
 
@@ -298,16 +325,33 @@ public class UnpooledDataSource implements DataSource {
     }
   }
 
+  /**
+   * add by creasylai 2020.1.7
+   * @param iface
+   * @param <T>
+   * @return
+   * @throws SQLException
+   */
   @Override
   public <T> T unwrap(Class<T> iface) throws SQLException {
     throw new SQLException(getClass().getName() + " is not a wrapper.");
   }
 
+  /**
+   * add by creasylai 2020.1.7
+   * @param iface
+   * @return
+   * @throws SQLException
+   */
   @Override
   public boolean isWrapperFor(Class<?> iface) throws SQLException {
     return false;
   }
 
+  /**
+   * add by creasylai 2020.1.7
+   * @return
+   */
   @Override
   public Logger getParentLogger() {
     // requires JDK version 1.6

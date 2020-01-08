@@ -41,11 +41,11 @@ public class MainClass {
         new TestBrace(){{
             System.out.println("MainClass");
         }}.toString();*/
-        System.out.println(ExamplePlugin.class.getInterfaces());
-        System.out.println(ExamplePlugin.class.getCanonicalName());
-        System.out.println(ExamplePlugin.class.getSimpleName());
-        System.out.println(ExamplePlugin.class.getName());
-        System.out.println(ExamplePlugin.class.getTypeName());
+//        System.out.println(ExamplePlugin.class.getInterfaces());
+//        System.out.println(ExamplePlugin.class.getCanonicalName());
+//        System.out.println(ExamplePlugin.class.getSimpleName());
+//        System.out.println(ExamplePlugin.class.getName());
+//        System.out.println(ExamplePlugin.class.getTypeName());
     }
 
     public static String insertPersonSql() {

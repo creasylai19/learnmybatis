@@ -21,6 +21,7 @@ import java.sql.Connection;
  * Creates an {@link SqlSession} out of a connection or a DataSource
  *
  * @author Clinton Begin
+ * add by creasylai 2020.1.7 READ
  */
 public interface SqlSessionFactory {
 

@@ -21,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author Clinton Begin
+ * add by creasylai 2020.1.7 有间隔刷新周期的缓存
  */
 public class ScheduledCache implements Cache {
 

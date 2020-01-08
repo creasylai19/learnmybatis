@@ -23,6 +23,7 @@ import java.lang.annotation.Target;
 
 /**
  * @author Eduardo Macarron
+ * add by creasylai 2020.1.7 处理类型注解
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

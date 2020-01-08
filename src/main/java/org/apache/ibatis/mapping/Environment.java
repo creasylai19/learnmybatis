@@ -21,6 +21,7 @@ import org.apache.ibatis.transaction.TransactionFactory;
 
 /**
  * @author Clinton Begin
+ * add by creasylai 2020.1.7 环境信息，包含ID、事务工厂、DataSource
  */
 public final class Environment {
   private final String id;

@@ -19,15 +19,16 @@ import java.util.Iterator;
 
 /**
  * @author Clinton Begin
+ * add by creasylai 2020.1.7 READ
  */
 public class PropertyTokenizer implements Iterator<PropertyTokenizer> {
-  private String name;
-  private final String indexedName;
-  private String index;
-  private final String children;
+  private String name;//最终名字，比如a.b.c.d[2]，则name=d
+  private final String indexedName;//加上index的最终名字，比如a.b.c.d[2]，则name=d[2]
+  private String index;//如果indexedName有中括号，则index为中括号的指
+  private final String children;//如果有点号分隔，则children为最后一串名字，否则就是null
 
   public PropertyTokenizer(String fullname) {
-    int delim = fullname.indexOf('.');
+    int delim = fullname.indexOf('.');//a.b.c->name=a.b,children=c
     if (delim > -1) {
       name = fullname.substring(0, delim);
       children = fullname.substring(delim + 1);
@@ -36,7 +37,7 @@ public class PropertyTokenizer implements Iterator<PropertyTokenizer> {
       children = null;
     }
     indexedName = name;
-    delim = name.indexOf('[');
+    delim = name.indexOf('[');//abc[0]->name=abc,index=0
     if (delim > -1) {
       index = name.substring(delim + 1, name.length() - 1);
       name = name.substring(0, delim);

@@ -20,6 +20,7 @@ import org.apache.ibatis.reflection.ReflectionException;
 
 /**
  * @author Clinton Begin
+ * add by creasylai 2020.1.7 READ
  */
 public class DefaultObjectWrapperFactory implements ObjectWrapperFactory {
 

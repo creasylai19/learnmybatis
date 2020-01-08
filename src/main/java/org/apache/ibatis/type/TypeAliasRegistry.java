@@ -34,6 +34,7 @@ import org.apache.ibatis.io.Resources;
 
 /**
  * @author Clinton Begin
+ * add by creasylai 2020.1.7 别名注册
  */
 public class TypeAliasRegistry {
 
@@ -100,6 +101,12 @@ public class TypeAliasRegistry {
     registerAlias("ResultSet", ResultSet.class);
   }
 
+  /**
+   * add by creasylai 2020.1.7 如果typeAliases包含此别名，则返回对应value，否则直接使用类加载器加载，然后返回
+   * @param string
+   * @param <T>
+   * @return
+   */
   @SuppressWarnings("unchecked")
   // throws class cast exception as well if types cannot be assigned
   public <T> Class<T> resolveAlias(String string) {

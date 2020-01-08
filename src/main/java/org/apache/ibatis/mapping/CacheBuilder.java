@@ -115,6 +115,11 @@ public class CacheBuilder {
     }
   }
 
+  /**
+   * add by creasylai 2020.1.7 层层叠加Cache
+   * @param cache
+   * @return
+   */
   private Cache setStandardDecorators(Cache cache) {
     try {
       MetaObject metaCache = SystemMetaObject.forObject(cache);
@@ -139,6 +144,10 @@ public class CacheBuilder {
     }
   }
 
+  /**
+   * add by creasylai 2020.1.7 根据properties设置缓存的属性
+   * @param cache
+   */
   private void setCacheProperties(Cache cache) {
     if (properties != null) {
       MetaObject metaCache = SystemMetaObject.forObject(cache);
@@ -186,6 +195,12 @@ public class CacheBuilder {
     }
   }
 
+  /**
+   * add by creasylai 2020.1.7 穿件缓存实例对象
+   * @param cacheClass
+   * @param id
+   * @return
+   */
   private Cache newBaseCacheInstance(Class<? extends Cache> cacheClass, String id) {
     Constructor<? extends Cache> cacheConstructor = getBaseCacheConstructor(cacheClass);
     try {
@@ -195,6 +210,11 @@ public class CacheBuilder {
     }
   }
 
+  /**
+   * add by creasylai 2020.1.7 返回带一个String的构造方法
+   * @param cacheClass
+   * @return
+   */
   private Constructor<? extends Cache> getBaseCacheConstructor(Class<? extends Cache> cacheClass) {
     try {
       return cacheClass.getConstructor(String.class);
@@ -204,6 +224,12 @@ public class CacheBuilder {
     }
   }
 
+  /**
+   * add by creasylai 2020.1.7 创建缓存实例
+   * @param cacheClass
+   * @param base
+   * @return
+   */
   private Cache newCacheDecoratorInstance(Class<? extends Cache> cacheClass, Cache base) {
     Constructor<? extends Cache> cacheConstructor = getCacheDecoratorConstructor(cacheClass);
     try {
@@ -213,6 +239,11 @@ public class CacheBuilder {
     }
   }
 
+  /**
+   * add by creasylai 2020.1.7 拿到cacheClass类的构造方法
+   * @param cacheClass
+   * @return
+   */
   private Constructor<? extends Cache> getCacheDecoratorConstructor(Class<? extends Cache> cacheClass) {
     try {
       return cacheClass.getConstructor(Cache.class);

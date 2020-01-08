@@ -235,6 +235,7 @@ public class ResolverUtil<T> {
    * {@link ClassLoader#getResources(String)}.
    *
    * @param packageName The Java package name to convert to a path
+   * add by creasylai 2020.1.7 把包名转换为路径名
    */
   protected String getPackagePath(String packageName) {
     return packageName == null ? null : packageName.replace('.', '/');

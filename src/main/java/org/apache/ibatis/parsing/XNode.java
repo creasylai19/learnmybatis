@@ -301,6 +301,10 @@ public class XNode {
     return children;
   }
 
+  /**
+   * add by creasylai19 2020.1.7 解析name和value作为属性
+   * @return
+   */
   public Properties getChildrenAsProperties() {
     Properties properties = new Properties();
     for (XNode child : getChildren()) {

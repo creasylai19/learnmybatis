@@ -29,6 +29,7 @@ import java.util.Properties;
  * A class to simplify access to resources through the classloader.
  *
  * @author Clinton Begin
+ * add by creasylai19 2020.1.7 READ Resources资源的包装类，主要通过类加载器加载资源成为inputstream/inputreader/properties等
  */
 public class Resources {
 
@@ -124,6 +125,7 @@ public class Resources {
    * @param resource The resource to find
    * @return The resource
    * @throws IOException If the resource cannot be found or read
+   * add by creasylai 2020.1.7 使用类加载器加载资源
    */
   public static Properties getResourceAsProperties(String resource) throws IOException {
     Properties props = new Properties();
@@ -213,6 +215,7 @@ public class Resources {
    * @param urlString - the URL to get
    * @return An input stream with the data from the URL
    * @throws IOException If the resource cannot be found or read
+   * add by creasylai19 2020.1.7 通过URL加载资源
    */
   public static InputStream getUrlAsStream(String urlString) throws IOException {
     URL url = new URL(urlString);
@@ -243,6 +246,7 @@ public class Resources {
    * @param urlString - the URL to get
    * @return A Properties object with the data from the URL
    * @throws IOException If the resource cannot be found or read
+   * add by creasylai19 2020.1.7 通过URL加载资源
    */
   public static Properties getUrlAsProperties(String urlString) throws IOException {
     Properties props = new Properties();

@@ -17,6 +17,9 @@
     </typeAliases>
     <typeHandlers>
     </typeHandlers>
+    <objectFactory type="org.mybatis.example.utils.ExampleObjectFactory">
+        <property name="someProperty" value="100"/>
+    </objectFactory>
     <plugins>
         <plugin interceptor="org.mybatis.example.utils.ExamplePlugin">
             <property name="someProperty" value="100"/>

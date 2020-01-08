@@ -85,6 +85,11 @@ public abstract class BaseBuilder {
     }
   }
 
+  /**
+   * add by creasylai 指定参数类型
+   * @param alias
+   * @return
+   */
   protected ParameterMode resolveParameterMode(String alias) {
     if (alias == null) {
       return null;
@@ -96,6 +101,11 @@ public abstract class BaseBuilder {
     }
   }
 
+  /**
+   * add by creasylai 2020.1.7 首先从别名中检索，如果找不到就用类加载器加载，并通过无参构造函数创建对象
+   * @param alias
+   * @return
+   */
   protected Object createInstance(String alias) {
     Class<?> clazz = resolveClass(alias);
     if (clazz == null) {
@@ -108,6 +118,12 @@ public abstract class BaseBuilder {
     }
   }
 
+  /**
+   * add by creasylai 2020.1.7 首先从别名中检索，如果找不到就用类加载器加载返回
+   * @param alias
+   * @param <T>
+   * @return
+   */
   protected <T> Class<? extends T> resolveClass(String alias) {
     if (alias == null) {
       return null;
@@ -145,6 +161,12 @@ public abstract class BaseBuilder {
     return handler;
   }
 
+  /**
+   * add by creasylai 2020.1.7，首先从别名中检索，如果找不到就用类加载器加载返回
+   * @param alias
+   * @param <T>
+   * @return
+   */
   protected <T> Class<? extends T> resolveAlias(String alias) {
     return typeAliasRegistry.resolveAlias(alias);
   }

@@ -21,6 +21,7 @@ import org.apache.ibatis.logging.LogFactory;
 
 /**
  * @author Clinton Begin
+ * add by creasylai 2020.1.7 用于统计缓存命中的缓存类
  */
 public class LoggingCache implements Cache {
 

@@ -30,6 +30,7 @@ import org.apache.ibatis.io.Resources;
 
 /**
  * @author Clinton Begin
+ * add by creasylai 2020.1.7 串行化的缓存
  */
 public class SerializedCache implements Cache {
 

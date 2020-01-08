@@ -31,7 +31,7 @@ import org.apache.ibatis.cache.CacheException;
  * This way, other threads will wait until this element is filled instead of hitting the database.
  *
  * @author Eduardo Macarron
- *
+ * add by creasylai 2020.1.7 TODO 了解锁的细节
  */
 public class BlockingCache implements Cache {
 

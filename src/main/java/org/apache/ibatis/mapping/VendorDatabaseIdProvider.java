@@ -36,6 +36,7 @@ import org.apache.ibatis.logging.LogFactory;
  * a properties was specified and no translation was found.
  *
  * @author Eduardo Macarron
+ * add by creasylai 2020.1.7 获取数据库简写名
  */
 public class VendorDatabaseIdProvider implements DatabaseIdProvider {
 

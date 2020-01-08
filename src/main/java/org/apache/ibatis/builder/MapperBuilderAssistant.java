@@ -59,6 +59,11 @@ public class MapperBuilderAssistant extends BaseBuilder {
   private Cache currentCache;
   private boolean unresolvedCacheRef; // issue #676
 
+  /**
+   * add by creasylai 2020.1.7
+   * @param configuration
+   * @param resource
+   */
   public MapperBuilderAssistant(Configuration configuration, String resource) {
     super(configuration);
     ErrorContext.instance().resource(resource);
@@ -69,6 +74,10 @@ public class MapperBuilderAssistant extends BaseBuilder {
     return currentNamespace;
   }
 
+  /**
+   * add by creasylai 2020.1.7 设置Namespace
+   * @param currentNamespace
+   */
   public void setCurrentNamespace(String currentNamespace) {
     if (currentNamespace == null) {
       throw new BuilderException("The mapper element requires a namespace attribute to be specified.");
@@ -121,6 +130,17 @@ public class MapperBuilderAssistant extends BaseBuilder {
     }
   }
 
+  /**
+   * add by creasylai 2020.1.7 构建缓存，并添加到configuration对象中
+   * @param typeClass
+   * @param evictionClass
+   * @param flushInterval
+   * @param size
+   * @param readWrite
+   * @param blocking
+   * @param props
+   * @return
+   */
   public Cache useNewCache(Class<? extends Cache> typeClass,
       Class<? extends Cache> evictionClass,
       Long flushInterval,

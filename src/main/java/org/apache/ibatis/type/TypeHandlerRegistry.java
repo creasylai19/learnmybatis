@@ -315,6 +315,11 @@ public final class TypeHandlerRegistry {
 
   // Only handler
 
+  /**
+   * add by creasylai 2020.1.7 注册处理器，一个处理器能够处理多种Java类型，一个Java类型可以对应多个Jdbc类型
+   * @param typeHandler
+   * @param <T>
+   */
   @SuppressWarnings("unchecked")
   public <T> void register(TypeHandler<T> typeHandler) {
     boolean mappedTypeFound = false;
@@ -342,10 +347,22 @@ public final class TypeHandlerRegistry {
 
   // java type + handler
 
+  /**
+   * add by creasylai 2020.1.7 注册Java类型处理器
+   * @param javaType
+   * @param typeHandler
+   * @param <T>
+   */
   public <T> void register(Class<T> javaType, TypeHandler<? extends T> typeHandler) {
     register((Type) javaType, typeHandler);
   }
 
+  /**
+   * add by creasylai 2020.1.7 注册Java类型处理器，一个JavaType可以对应多个JdbcType
+   * @param javaType
+   * @param typeHandler
+   * @param <T>
+   */
   private <T> void register(Type javaType, TypeHandler<? extends T> typeHandler) {
     MappedJdbcTypes mappedJdbcTypes = typeHandler.getClass().getAnnotation(MappedJdbcTypes.class);
     if (mappedJdbcTypes != null) {
@@ -370,6 +387,12 @@ public final class TypeHandlerRegistry {
     register((Type) type, jdbcType, handler);
   }
 
+  /**
+   * add by creasylai 2020.1.7 注册Java类型处理器
+   * @param javaType
+   * @param jdbcType
+   * @param handler
+   */
   private void register(Type javaType, JdbcType jdbcType, TypeHandler<?> handler) {
     if (javaType != null) {
       Map<JdbcType, TypeHandler<?>> map = typeHandlerMap.get(javaType);
@@ -388,6 +411,10 @@ public final class TypeHandlerRegistry {
 
   // Only handler type
 
+  /**
+   * add by creasylai 2020.1.7 构造处理器对象，并注册
+   * @param typeHandlerClass
+   */
   public void register(Class<?> typeHandlerClass) {
     boolean mappedTypeFound = false;
     MappedTypes mappedTypes = typeHandlerClass.getAnnotation(MappedTypes.class);
@@ -408,6 +435,11 @@ public final class TypeHandlerRegistry {
     register(Resources.classForName(javaTypeClassName), Resources.classForName(typeHandlerClassName));
   }
 
+  /**
+   * add by creasylai 2020.1.7 注册Java类型处理器
+   * @param javaTypeClass
+   * @param typeHandlerClass
+   */
   public void register(Class<?> javaTypeClass, Class<?> typeHandlerClass) {
     register(javaTypeClass, getInstance(javaTypeClass, typeHandlerClass));
   }
@@ -420,6 +452,13 @@ public final class TypeHandlerRegistry {
 
   // Construct a handler (used also from Builders)
 
+  /**
+   * add by creasylai 2020.1.7 构造处理器对象
+   * @param javaTypeClass
+   * @param typeHandlerClass
+   * @param <T>
+   * @return
+   */
   @SuppressWarnings("unchecked")
   public <T> TypeHandler<T> getInstance(Class<?> javaTypeClass, Class<?> typeHandlerClass) {
     if (javaTypeClass != null) {
@@ -442,6 +481,10 @@ public final class TypeHandlerRegistry {
 
   // scan
 
+  /**
+   * 扫描包，找到类类型为TypeHandler.class的类，然后进行注册
+   * @param packageName
+   */
   public void register(String packageName) {
     ResolverUtil<Class<?>> resolverUtil = new ResolverUtil<>();
     resolverUtil.find(new ResolverUtil.IsA(TypeHandler.class), packageName);

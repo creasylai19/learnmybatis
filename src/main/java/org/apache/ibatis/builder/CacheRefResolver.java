@@ -19,6 +19,7 @@ import org.apache.ibatis.cache.Cache;
 
 /**
  * @author Clinton Begin
+ * add by creasylai 2020.1.7 缓存引用
  */
 public class CacheRefResolver {
   private final MapperBuilderAssistant assistant;
